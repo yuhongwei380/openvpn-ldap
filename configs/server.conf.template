@@ -31,5 +31,5 @@ status openvpn-status.log
 verb 3
 
 # 安全增强
-tls-version-min ${OVPN_TLS_VERSION}
-tls-cipher ${OVPN_CIPHER}
+tls-version-min 1.2
+tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
