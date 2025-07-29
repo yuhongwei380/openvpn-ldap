@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y \
     openvpn \
     easy-rsa \
     openvpn-auth-ldap \
-    iptables          
+    iptables \
+    gettext-base
 
 RUN  rm -rf /var/lib/apt/lists/*
 
