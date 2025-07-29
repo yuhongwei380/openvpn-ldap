@@ -82,4 +82,4 @@ chmod 644 "$CERT_DIR/"*.crt "$CERT_DIR/dh.pem" 2>/dev/null || true
 # 启动OpenVPN服务
 # ==============================================
 echo "🚀 启动OpenVPN服务..."
-exec openvpn --config /etc/openvpn/server.conf "$@"
+exec openvpn  /etc/openvpn/server.conf "$@"
