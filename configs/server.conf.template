@@ -1,7 +1,6 @@
 port ${OVPN_PORT}
 proto ${OVPN_PROTO}
 dev ${OVPN_DEV}
-tun-ipv6
 
 # 证书配置
 ca ${OVPN_CA_CERT}
@@ -14,6 +13,7 @@ server ${OVPN_NETWORK} ${OVPN_NETMASK}
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS ${OVPN_DNS_IPV4}"
 
+# IPv6 配置（仅在启用时生效）
 ${OVPN_IPV6_CONFIG}
 ${OVPN_IPV6_ROUTE}
 ${OVPN_IPV6_DNS}
