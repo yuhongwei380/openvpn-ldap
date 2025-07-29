@@ -14,11 +14,11 @@ RUN mkdir -p /etc/openvpn/certs /etc/openvpn/auth /etc/openvpn/client-templates
 
 # 添加配置文件和脚本
 COPY entrypoint.sh /usr/local/bin/
-COPY server.conf.template /etc/openvpn/
-COPY ldap.conf.template /etc/openvpn/auth/
+COPY configs/server.conf.template /etc/openvpn/
+COPY configs/ldap.conf.template /etc/openvpn/auth/
 
 # 证书生成脚本
-COPY generate-certs.sh /usr/local/bin/
+COPY scripts/generate-certs.sh /usr/local/bin/
 
 # 设置权限
 RUN chmod +x /usr/local/bin/entrypoint.sh \
