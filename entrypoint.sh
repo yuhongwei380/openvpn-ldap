@@ -34,16 +34,22 @@ fi
 echo "📝 生成配置文件..."
 
 # 处理IPv6相关变量（如果启用）
-export OVPN_IPV6_CONFIG=$([ "$OVPN_IPV6_ENABLE" = "true" ] && echo "server-ipv6 $OVPN_IPV6_NETWORK")
-export OVPN_IPV6_ROUTE=$([ "$OVPN_IPV6_ENABLE" = "true" ] && echo "push \"route-ipv6 $OVPN_IPV6_ROUTE\"")
-export OVPN_IPV6_DNS=$([ "$OVPN_IPV6_ENABLE" = "true" ] && echo "push \"dhcp-option DNS $OVPN_DNS_IPV6\"")
+if [ "$OVPN_IPV6_ENABLE" = "true" ]; then
+  export OVPN_IPV6_CONFIG="server-ipv6 $OVPN_IPV6_NETWORK"
+  export OVPN_IPV6_ROUTE="push \"route-ipv6 $OVPN_IPV6_ROUTE\""
+  export OVPN_IPV6_DNS="push \"dhcp-option DNS $OVPN_DNS_IPV6\""
+else
+  export OVPN_IPV6_CONFIG=""
+  export OVPN_IPV6_ROUTE=""
+  export OVPN_IPV6_DNS=""
+fi
 
-# 渲染OpenVPN配置
-envsubst < /etc/openvpn/server.conf.template > /etc/openvpn/server.conf
+# 渲染OpenVPN配置（使用白名单变量）
+envsubst '$OVPN_PORT $OVPN_PROTO $OVPN_DEV $OVPN_CA_CERT $OVPN_SERVER_CERT $OVPN_SERVER_KEY $OVPN_DH_PEM $OVPN_NETWORK $OVPN_NETMASK $OVPN_DNS_IPV4 $OVPN_IPV6_CONFIG $OVPN_IPV6_ROUTE $OVPN_IPV6_DNS $OVPN_TLS_VERSION $OVPN_CIPHER' < /etc/openvpn/server.conf.template > /etc/openvpn/server.conf
 
 # 渲染LDAP配置（密码特殊处理）
 export LDAP_PASSWORD_ESCAPED=$(echo "$LDAP_PASSWORD" | sed 's/[\/&]/\\&/g')
-envsubst < /etc/openvpn/auth/ldap.conf.template > /etc/openvpn/auth/ldap.conf
+envsubst '$LDAP_URL $LDAP_BASE_DN $LDAP_BIND_DN $LDAP_PASSWORD_ESCAPED $LDAP_FILTER' < /etc/openvpn/auth/ldap.conf.template > /etc/openvpn/auth/ldap.conf
 
 # ==============================================
 # 网络配置（IPv4/IPv6 NAT和转发）
@@ -82,4 +88,4 @@ chmod 644 "$CERT_DIR/"*.crt "$CERT_DIR/dh.pem" 2>/dev/null || true
 # 启动OpenVPN服务
 # ==============================================
 echo "🚀 启动OpenVPN服务..."
-exec openvpn  /etc/openvpn/server.conf "$@"
+exec openvpn /etc/openvpn/server.conf "$@"
