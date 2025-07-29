@@ -49,7 +49,8 @@ envsubst '$OVPN_PORT $OVPN_PROTO $OVPN_DEV $OVPN_CA_CERT $OVPN_SERVER_CERT $OVPN
 
 # 渲染LDAP配置（密码特殊处理）
 export LDAP_PASSWORD_ESCAPED=$(echo "$LDAP_PASSWORD" | sed 's/[\/&]/\\&/g')
-envsubst '$LDAP_URL $LDAP_BASE_DN $LDAP_BIND_DN $LDAP_PASSWORD_ESCAPED $LDAP_FILTER' < /etc/openvpn/auth/ldap.conf.template > /etc/openvpn/auth/ldap.conf
+# 只替换需要的变量
+envsubst '$LDAP_URL $LDAP_BIND_DN $LDAP_PASSWORD_ESCAPED $LDAP_BASE_DN' < /etc/openvpn/auth/ldap.conf.template > /etc/openvpn/auth/ldap.conf
 
 # ==============================================
 # 网络配置（IPv4/IPv6 NAT和转发）
