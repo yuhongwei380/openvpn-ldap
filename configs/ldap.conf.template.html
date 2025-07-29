@@ -1,0 +1,14 @@
+<LDAP>
+    URL             ${LDAP_URL}
+    BindDN          ${LDAP_BIND_DN}
+    Password        ${LDAP_PASSWORD}
+    Timeout         ${LDAP_TIMEOUT}
+    TLSEnable       ${LDAP_TLS_ENABLE}
+    FollowReferrals ${LDAP_FOLLOW_REFERRALS}
+</LDAP>
+
+<Authorization>
+    BaseDN          ${LDAP_BASE_DN}
+    SearchFilter    ${LDAP_SEARCH_FILTER}
+    RequireGroup    ${LDAP_REQUIRE_GROUP}
+</Authorization>

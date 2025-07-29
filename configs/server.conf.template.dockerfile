@@ -1,0 +1,35 @@
+port ${OVPN_PORT}
+proto ${OVPN_PROTO}
+dev ${OVPN_DEV}
+${OVPN_IPV6}
+
+# 证书配置
+ca ${OVPN_CA_CERT}
+cert ${OVPN_SERVER_CERT}
+key ${OVPN_SERVER_KEY}
+dh ${OVPN_DH_PEM}
+
+# 网络配置
+server ${OVPN_NETWORK} ${OVPN_NETMASK}
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS ${OVPN_DNS_IPV4}"
+
+${OVPN_IPV6_CONFIG}
+${OVPN_IPV6_ROUTE}
+${OVPN_IPV6_DNS}
+
+# LDAP认证
+plugin /usr/lib/openvpn/openvpn-auth-ldap.so /etc/openvpn/auth/ldap.conf
+verify-client-cert none
+username-as-common-name
+
+# 其他配置
+keepalive 10 120
+persist-key
+persist-tun
+status openvpn-status.log
+verb 3
+
+# 安全增强
+tls-version-min ${OVPN_TLS_VERSION}
+tls-cipher ${OVPN_CIPHER}
