@@ -14,9 +14,9 @@ services:
     volumes:
       - ./certs:/etc/openvpn/certs  # 挂载证书目录
       - ./configs:/etc/openvpn/configs:ro  # 挂载配置文件(可选)
+    privileged: true  # 允许修改系统参数
     sysctls:
       - net.ipv4.ip_forward=1
-      - net.ipv6.conf.all.disable_ipv6=0
       - net.ipv6.conf.all.forwarding=1
     healthcheck:
       test: ["CMD", "pgrep", "openvpn"]
