@@ -1,7 +1,7 @@
 port ${OVPN_PORT}
 proto ${OVPN_PROTO}
 dev ${OVPN_DEV}
-${OVPN_IPV6}
+tun-ipv6
 
 # 证书配置
 ca ${OVPN_CA_CERT}
