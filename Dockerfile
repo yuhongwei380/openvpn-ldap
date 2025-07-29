@@ -5,9 +5,9 @@ RUN apt-get update && apt-get install -y \
     openvpn \
     easy-rsa \
     openvpn-auth-ldap \
-    iptables \
-    ip6tables \
-    && rm -rf /var/lib/apt/lists/*
+    iptables          
+
+RUN  rm -rf /var/lib/apt/lists/*
 
 # 创建目录结构
 RUN mkdir -p /etc/openvpn/certs /etc/openvpn/auth /etc/openvpn/client-templates
