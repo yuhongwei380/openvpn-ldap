@@ -43,6 +43,7 @@ else
   export OVPN_IPV6_CONFIG=""
   export OVPN_IPV6_ROUTE=""
   export OVPN_IPV6_DNS=""
+  export OVPN_IPV6_PUSH_SUBNET=""
 fi
 
 # 渲染OpenVPN配置（使用白名单变量）
