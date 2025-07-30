@@ -17,6 +17,7 @@ push "dhcp-option DNS ${OVPN_DNS_IPV4}"
 ${OVPN_IPV6_CONFIG}
 ${OVPN_IPV6_ROUTE}
 ${OVPN_IPV6_DNS}
+${OVPN_IPV6_PUSH_SUBNET}
 
 #允许客户端间互访
 client-to-client
