@@ -13,7 +13,7 @@ services:
       - .env  # 引用环境变量文件
     volumes:
       - ./certs:/etc/openvpn/certs  # 挂载证书目录
-      - ./configs:/etc/openvpn/configs:ro  # 挂载配置文件(可选)
+      #- ./configs:/etc/openvpn/configs:ro  # 挂载配置文件(可选)
     privileged: true  # 允许修改系统参数
     sysctls:
       - net.ipv4.ip_forward=1
