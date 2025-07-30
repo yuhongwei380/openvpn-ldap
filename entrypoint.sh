@@ -38,6 +38,7 @@ if [ "$OVPN_IPV6_ENABLE" = "true" ]; then
   export OVPN_IPV6_CONFIG="server-ipv6 $OVPN_IPV6_NETWORK"
   export OVPN_IPV6_ROUTE="push \"route-ipv6 $OVPN_IPV6_ROUTE\""
   export OVPN_IPV6_DNS="push \"dhcp-option DNS $OVPN_DNS_IPV6\""
+  export OVPN_IPV6_PUSH_SUBNET="push \"route-ipv6 $OVPN_IPV6_NETWORK\""
 else
   export OVPN_IPV6_CONFIG=""
   export OVPN_IPV6_ROUTE=""
@@ -45,7 +46,7 @@ else
 fi
 
 # 渲染OpenVPN配置（使用白名单变量）
-envsubst '$OVPN_PORT $OVPN_PROTO $OVPN_DEV $OVPN_CA_CERT $OVPN_SERVER_CERT $OVPN_SERVER_KEY $OVPN_DH_PEM $OVPN_NETWORK $OVPN_NETMASK $OVPN_DNS_IPV4 $OVPN_IPV6_CONFIG $OVPN_IPV6_ROUTE $OVPN_IPV6_DNS $OVPN_CIPHER' < /etc/openvpn/server.conf.template > /etc/openvpn/server.conf
+envsubst '$OVPN_PORT $OVPN_PROTO $OVPN_DEV $OVPN_CA_CERT $OVPN_SERVER_CERT $OVPN_SERVER_KEY $OVPN_DH_PEM $OVPN_NETWORK $OVPN_NETMASK $OVPN_DNS_IPV4 $OVPN_IPV6_CONFIG $OVPN_IPV6_ROUTE $OVPN_IPV6_DNS $OVPN_CIPHER $OVPN_IPV6_PUSH_SUBNET' < /etc/openvpn/server.conf.template > /etc/openvpn/server.conf
 
 # 渲染LDAP配置（密码特殊处理）
 export LDAP_PASSWORD_ESCAPED=$(echo "$LDAP_PASSWORD" | sed 's/[\/&]/\\&/g')
@@ -75,6 +76,7 @@ if [ "$OVPN_IPV6_ENABLE" = "true" ] && [ "$ENABLE_IPV6_NAT" = "true" ]; then
   ip6tables -t nat -A POSTROUTING -s "$OVPN_IPV6_NETWORK" -o eth0 -j MASQUERADE
   ip6tables -A FORWARD -d "$OVPN_IPV6_NETWORK" -j ACCEPT
   ip6tables -A FORWARD -s "$OVPN_IPV6_NETWORK" -j ACCEPT
+  
   echo "🔗 已启用IPv6 NAT规则"
 fi
 
