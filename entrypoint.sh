@@ -86,7 +86,21 @@ chmod 600 "$CERT_DIR/"*.key "$CERT_DIR/ta.key" 2>/dev/null || true
 chmod 644 "$CERT_DIR/"*.crt "$CERT_DIR/dh.pem" 2>/dev/null || true
 
 # ==============================================
+# 创建客户端配置生成功能
+# ==============================================
+echo "🔧 准备客户端配置生成功能..."
+
+# 创建客户端配置输出目录
+mkdir -p /etc/openvpn/client-configs
+
+# 如果需要自动生成默认客户端配置
+if [ "$GENERATE_DEFAULT_CLIENT_CONFIG" = "true" ]; then
+    echo "📝 生成默认客户端配置..."
+    /usr/local/bin/generate-client-config.sh default-client
+fi
+
+# ==============================================
 # 启动OpenVPN服务
 # ==============================================
 echo "🚀 启动OpenVPN服务..."
-exec openvpn /etc/openvpn/server.conf 
+exec openvpn --config /etc/openvpn/server.conf
