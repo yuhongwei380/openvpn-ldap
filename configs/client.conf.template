@@ -19,6 +19,9 @@ nobind
 persist-key
 persist-tun
 
+#不验证证书
+client-cert-not-required
+
 # 安全配置
 remote-cert-tls server
 tls-version-min 1.2
