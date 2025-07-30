@@ -103,4 +103,4 @@ fi
 # 启动OpenVPN服务
 # ==============================================
 echo "🚀 启动OpenVPN服务..."
-exec openvpn --config /etc/openvpn/server.conf
+exec openvpn  /etc/openvpn/server.conf
