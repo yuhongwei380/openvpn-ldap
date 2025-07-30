@@ -18,7 +18,10 @@ ${OVPN_IPV6_CONFIG}
 ${OVPN_IPV6_ROUTE}
 ${OVPN_IPV6_DNS}
 
+#允许客户端间互访
 client-to-client
+#允许一个用户多设备同时在线
+duplicate-cn 
 
 # LDAP认证
 plugin /usr/lib/openvpn/openvpn-auth-ldap.so /etc/openvpn/auth/ldap.conf
