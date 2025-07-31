@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     iptables \
     gettext-base \
     iproute2 \
+    iputils-ping \
+    tcpdump \
     && rm -rf /var/lib/apt/lists/*
 
 # 创建目录结构
