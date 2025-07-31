@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     openvpn-auth-ldap \
     iptables \
     gettext-base \
+    iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 # 创建目录结构
