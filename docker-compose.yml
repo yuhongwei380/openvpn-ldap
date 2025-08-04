@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   openvpn:
-    image: your-openvpn-ldap-image:latest  # 替换为你的镜像名
+    image: yuhongwei1997/openvpn-ldap:v2.0
     container_name: openvpn-ldap
     restart: unless-stopped
     cap_add:
@@ -10,14 +10,14 @@ services:
     ports:
       - "${OVPN_PORT}:${OVPN_PORT}/udp"
     env_file:
-      - .env  # 引用环境变量文件
+      - .env
     volumes:
-      - ./certs:/etc/openvpn/certs  # 挂载证书目录
-      #- ./configs:/etc/openvpn/configs:ro  # 挂载配置文件(可选)
-    privileged: true  # 允许修改系统参数
-    sysctls:
-      - net.ipv4.ip_forward=1
-      - net.ipv6.conf.all.forwarding=1
+      - ./certs:/etc/openvpn/certs
+    privileged: true
+    network_mode: "host"  # 使用host网络
+      #sysctls:
+      #- net.ipv4.ip_forward=1
+        #  - net.ipv6.conf.all.forwarding=1
     healthcheck:
       test: ["CMD", "pgrep", "openvpn"]
       interval: 30s
@@ -25,4 +25,4 @@ services:
       retries: 3
 
 volumes:
-  certs:  # 持久化证书存储
+  certs:
