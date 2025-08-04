@@ -39,29 +39,23 @@ if [ "$OVPN_IPV6_ENABLE" = "true" ]; then
   export OVPN_IPV6_ROUTE="push \"route-ipv6 $OVPN_IPV6_ROUTE\""
   export OVPN_IPV6_DNS="push \"dhcp-option DNS $OVPN_DNS_IPV6\""
   export OVPN_IPV6_PUSH_SUBNET="push \"route-ipv6 $OVPN_IPV6_NETWORK\""
-
-    # 生成内部网络路由推送
-  OVPN_IPV6_INTERNAL_ROUTES=""
-  if [ -n "$OVPN_IPV6_INTERNAL_NETWORKS" ]; then
-    for network in $OVPN_IPV6_INTERNAL_NETWORKS; do
-      OVPN_IPV6_INTERNAL_ROUTES="${OVPN_IPV6_INTERNAL_ROUTES}push \"route-ipv6 $network\"\n"
-    done
-  fi
-  export OVPN_IPV6_INTERNAL_ROUTES
+  export OVPN_IPV6_INTERNAL_ROUTES0="push \"route-ipv6 $OVPN_IPV6_INT_NETWORK0\""
+  export OVPN_IPV6_INTERNAL_ROUTES1="push \"route-ipv6 $OVPN_IPV6_INT_NETWORK1\""
+  export OVPN_IPV6_INTERNAL_ROUTES2="push \"route-ipv6 $OVPN_IPV6_INT_NETWORK2\""
   
-  # 调试输出（可选）
-  echo "Generated internal routes:"
-  echo -e "$OVPN_IPV6_INTERNAL_ROUTES"
+
 else
   export OVPN_IPV6_CONFIG=""
   export OVPN_IPV6_ROUTE=""
   export OVPN_IPV6_DNS=""
   export OVPN_IPV6_PUSH_SUBNET=""
-  export OVPN_IPV6_INTERNAL_ROUTES=""
+  export OVPN_IPV6_INTERNAL_ROUTES0=""
+  export OVPN_IPV6_INTERNAL_ROUTES1=""
+  export OVPN_IPV6_INTERNAL_ROUTES2=""
 fi
 
 # 渲染OpenVPN配置（使用白名单变量）
-envsubst '$OVPN_PORT $OVPN_PROTO $OVPN_DEV $OVPN_CA_CERT $OVPN_SERVER_CERT $OVPN_SERVER_KEY $OVPN_DH_PEM $OVPN_NETWORK $OVPN_NETMASK $OVPN_DNS_IPV4 $OVPN_IPV6_CONFIG $OVPN_IPV6_ROUTE $OVPN_IPV6_DNS $OVPN_CIPHER $OVPN_IPV6_PUSH_SUBNET $OVPN_IPV6_INTERNAL_ROUTES'  < /etc/openvpn/server.conf.template > /etc/openvpn/server.conf
+envsubst '$OVPN_PORT $OVPN_PROTO $OVPN_DEV $OVPN_CA_CERT $OVPN_SERVER_CERT $OVPN_SERVER_KEY $OVPN_DH_PEM $OVPN_NETWORK $OVPN_NETMASK $OVPN_DNS_IPV4 $OVPN_IPV6_CONFIG $OVPN_IPV6_ROUTE $OVPN_IPV6_DNS $OVPN_CIPHER $OVPN_IPV6_PUSH_SUBNET $OVPN_IPV6_INTERNAL_ROUTES0  $OVPN_IPV6_INTERNAL_ROUTES1   $OVPN_IPV6_INTERNAL_ROUTES2'  < /etc/openvpn/server.conf.template > /etc/openvpn/server.conf
 
 # 渲染LDAP配置（密码特殊处理）
 export LDAP_PASSWORD_ESCAPED=$(echo "$LDAP_PASSWORD" | sed 's/[\/&]/\\&/g')
