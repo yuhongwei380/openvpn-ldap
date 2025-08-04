@@ -15,6 +15,12 @@ redirect-gateway def1 bypass-dhcp
 dhcp-option DNS ${OVPN_DNS_IPV4}
 ${OVPN_DNS_IPV6_CONFIG}
 
+#手动新增IPV6 内部网络的推送(不依赖服务器推送)
+#route-ipv6 fd00:2024:db6::/64
+#route-ipv6 fd00:2024:db8::/64
+#route-ipv6 fd00:2024:dbf::/64
+
+
 nobind
 persist-key
 persist-tun
