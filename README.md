@@ -18,7 +18,7 @@ NAT from vm with docker
 `10.8.0.0/24`  is your vpn network
 ```
 sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-sudo ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/96 -o  eth0 -j MASQUERADE
+sudo ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/80 -o  eth0 -j MASQUERADE
 ```
 删除 iptables
 ```
