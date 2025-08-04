@@ -40,12 +40,18 @@ if [ "$OVPN_IPV6_ENABLE" = "true" ]; then
   export OVPN_IPV6_DNS="push \"dhcp-option DNS $OVPN_DNS_IPV6\""
   export OVPN_IPV6_PUSH_SUBNET="push \"route-ipv6 $OVPN_IPV6_NETWORK\""
 
-  # 生成内部网络路由推送
+    # 生成内部网络路由推送
   OVPN_IPV6_INTERNAL_ROUTES=""
-  for network in $OVPN_IPV6_INTERNAL_NETWORKS; do
-    OVPN_IPV6_INTERNAL_ROUTES="${OVPN_IPV6_INTERNAL_ROUTES}push \"route-ipv6 $network\"\n"
-  done
+  if [ -n "$OVPN_IPV6_INTERNAL_NETWORKS" ]; then
+    for network in $OVPN_IPV6_INTERNAL_NETWORKS; do
+      OVPN_IPV6_INTERNAL_ROUTES="${OVPN_IPV6_INTERNAL_ROUTES}push \"route-ipv6 $network\"\n"
+    done
+  fi
   export OVPN_IPV6_INTERNAL_ROUTES
+  
+  # 调试输出（可选）
+  echo "Generated internal routes:"
+  echo -e "$OVPN_IPV6_INTERNAL_ROUTES"
 else
   export OVPN_IPV6_CONFIG=""
   export OVPN_IPV6_ROUTE=""
