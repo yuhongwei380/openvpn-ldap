@@ -25,5 +25,24 @@ services:
       timeout: 10s
       retries: 3
 
+  openvpn-monitor:
+    image: ruimarinho/openvpn-monitor
+    container_name: openvpn-monitor
+    ports:
+      - "80:80"
+    environment:
+      # 默认设置
+      - OPENVPNMONITOR_DEFAULT_DATETIMEFORMAT=%%d/%%m/%%Y
+      - OPENVPNMONITOR_DEFAULT_SITE=OpenVPN Server
+      
+      # UDP 站点配置（包含密码）
+      - OPENVPNMONITOR_SITES_0_ALIAS=Default Server
+      - OPENVPNMONITOR_SITES_0_HOST=192.168.15.229  # 替换为你的 OpenVPN 主机IP或容器名
+      - OPENVPNMONITOR_SITES_0_NAME=Default Server
+      - OPENVPNMONITOR_SITES_0_PORT=5555
+      - OPENVPNMONITOR_SITES_0_SHOWDISCONNECT=True
+      - OPENVPNMONITOR_SITES_0_PASSWORD=admin  # 管理密码
+    restart: unless-stopped
+
 volumes:
   certs:
