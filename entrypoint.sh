@@ -110,7 +110,7 @@ if [ "$GENERATE_DEFAULT_CLIENT_CONFIG" = "true" ]; then
     /usr/local/bin/generate-client-config.sh default-client
 fi
 
-echo "admin" | sudo tee /etc/openvpn/management-password.txt
+echo "admin" |  tee /etc/openvpn/management-password.txt
 sudo chmod 600 /etc/openvpn/management-password.txt
 sudo chown root:root /etc/openvpn/management-password.txt
 
