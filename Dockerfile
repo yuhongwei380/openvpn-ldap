@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     tcpdump \
     traceroute \
+    vim \
     && rm -rf /var/lib/apt/lists/*
 
 # 创建目录结构
