@@ -9,8 +9,6 @@ status-version 3
 
 topology subnet
 
-#禁用重放
-no-replay
 reneg-sec 0
 
 # 证书配置
