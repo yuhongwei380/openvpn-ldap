@@ -111,8 +111,8 @@ if [ "$GENERATE_DEFAULT_CLIENT_CONFIG" = "true" ]; then
 fi
 
 echo "admin" |  tee /etc/openvpn/management-password.txt
-sudo chmod 600 /etc/openvpn/management-password.txt
-sudo chown root:root /etc/openvpn/management-password.txt
+chmod 600 /etc/openvpn/management-password.txt
+chown root:root /etc/openvpn/management-password.txt
 
 # ==============================================
 # 启动OpenVPN服务
