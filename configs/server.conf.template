@@ -3,7 +3,7 @@ proto ${OVPN_PROTO}
 dev ${OVPN_DEV}
 
 #管理页面配置
-management 127.0.0.1 5555
+management 127.0.0.1 5555 /etc/openvpn/management-password.txt
 status /var/log/openvpn-status.log
 status-version 3
 
