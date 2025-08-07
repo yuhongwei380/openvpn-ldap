@@ -1,5 +1,21 @@
 FROM ubuntu:24.04
 
+# 设置非交互模式，避免 tzdata 配置时的交互提示
+ENV TZ=Asia/Shanghai
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 更新包列表，安装 tzdata（时区数据），并设置时区
+RUN apt-get update && \
+    apt-get install -y tzdata && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 可选：验证时区
+RUN date
+
+
 # 安装依赖
 RUN apt-get update && apt-get install -y \
     openvpn \
@@ -13,6 +29,8 @@ RUN apt-get update && apt-get install -y \
     traceroute \
     vim \
     && rm -rf /var/lib/apt/lists/*
+    
+
 
 # 创建目录结构
 RUN mkdir -p /etc/openvpn/certs \
