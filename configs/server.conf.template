@@ -7,6 +7,8 @@ management 127.0.0.1 5555
 status /var/log/openvpn-status.log
 status-version 3
 
+topology subnet
+
 #禁用重放
 no-replay
 reneg-sec 0
