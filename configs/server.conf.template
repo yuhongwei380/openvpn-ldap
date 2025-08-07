@@ -42,7 +42,7 @@ username-as-common-name
 keepalive 10 120
 persist-key
 persist-tun
-status openvpn-status.log
+status /var/log/openvpn.log
 verb 3
 
 # 安全增强
