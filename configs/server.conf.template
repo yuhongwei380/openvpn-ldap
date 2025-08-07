@@ -7,6 +7,9 @@ management 127.0.0.1 5555
 status /var/log/openvpn-status.log
 status-version 3
 
+#禁用重放
+no-replay
+
 # 证书配置
 ca ${OVPN_CA_CERT}
 cert ${OVPN_SERVER_CERT}
