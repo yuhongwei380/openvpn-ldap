@@ -50,5 +50,7 @@ status /var/log/openvpn.log
 verb 3
 
 # 安全增强
+cipher AES-256-GCM
+data-ciphers AES-256-GCM:AES-128-GCM:CHACHA20-POLY1305
 tls-version-min 1.2
 tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
