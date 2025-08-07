@@ -9,6 +9,7 @@ status-version 3
 
 #禁用重放
 no-replay
+reneg-sec 0
 
 # 证书配置
 ca ${OVPN_CA_CERT}
