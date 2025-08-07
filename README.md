@@ -29,7 +29,12 @@ daemon.json
 
 ```
 
-## 4.Setting the NAT
+## 4. Get the Client Config
+```
+docker cp openvpn-ldap:/etc/openvpn/client-configs/default-client.ovpn ./
+```
+
+## 5.Setting the NAT
 NAT from vm with docker
 ```
 sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
