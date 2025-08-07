@@ -2,6 +2,11 @@ port ${OVPN_PORT}
 proto ${OVPN_PROTO}
 dev ${OVPN_DEV}
 
+#管理页面配置
+management 127.0.0.1 5555
+status /var/log/openvpn-status.log
+status-version 3
+
 # 证书配置
 ca ${OVPN_CA_CERT}
 cert ${OVPN_SERVER_CERT}
