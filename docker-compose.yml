@@ -9,6 +9,7 @@ services:
       - NET_ADMIN
     ports:
       - "${OVPN_PORT}:${OVPN_PORT}/udp"
+      - "5555:5555"
     env_file:
       - .env
     volumes:
