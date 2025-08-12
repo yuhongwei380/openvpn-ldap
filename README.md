@@ -20,6 +20,7 @@ docker cp openvpn-ldap:/etc/openvpn/client-configs/my-client.ovpn ./
 
 introduce：
 `10.7.0.0/16`  is your vpn network
+our test env based on IPV6 NAT66 ,so the vm ' ipv6 address is not public IPV6 address ,also the docker network IPV6 is not public IPV6 address
 `fd00:2024:dbf:0000:2290::/80` is your docker network for IPV6
 
 daemon.json
