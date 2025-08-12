@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   openvpn:
-    image: yuhongwei1997/openvpn-ldap:v2.0
+    image: yuhongwei1997/openvpn-ldap:v2.1
     container_name: openvpn-ldap
     restart: unless-stopped
     cap_add:
