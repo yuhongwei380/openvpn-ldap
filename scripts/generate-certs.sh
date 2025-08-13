@@ -1,103 +1,50 @@
 #!/bin/bash
 
-set -e
-
 CERT_DIR="/etc/openvpn/certs"
-CA_DIR="/etc/openvpn/ca"
+EASYRSA_DIR="$HOME/openvpn-ca"
+EASYRSA_PKI="$EASYRSA_DIR/pki"
 
-echo "🔐 开始生成OpenVPN证书..."
+# 创建 CA 目录结构
+mkdir /etc/openvpn/certs/
+make-cadir "$EASYRSA_DIR"
+cd "$EASYRSA_DIR"
 
-# 创建必要的目录
-mkdir -p "$CERT_DIR"
-mkdir -p "$CA_DIR"
-
-# 检查 easyrsa 命令
-if ! command -v easyrsa &> /dev/null; then
-    echo "❌ easyrsa 命令未找到"
-    # 查找 easyrsa 位置
-    EASYRSA_PATH=$(find /usr -name "easyrsa" 2>/dev/null | head -1)
-    if [ -n "$EASYRSA_PATH" ]; then
-        echo "✅ 找到 easyrsa: $EASYRSA_PATH"
-        EASYRSA_CMD="$EASYRSA_PATH"
-    else
-        echo "❌ 无法找到 easyrsa 命令"
-        exit 0
-    fi
-else
-    EASYRSA_CMD="easyrsa"
-    echo "✅ 使用 easyrsa 命令: $(which easyrsa)"
-fi
-
-# 初始化 CA 目录
-cd "$CA_DIR"
-
-# 创建 vars 文件（新版本语法）
-cat > vars << 'EOF'
-export EASYRSA_REQ_COUNTRY="CN"
-export EASYRSA_REQ_PROVINCE="Beijing"
-export EASYRSA_REQ_CITY="Beijing"
-export EASYRSA_REQ_ORG="OpenVPN"
-export EASYRSA_REQ_EMAIL="admin@example.com"
-export EASYRSA_REQ_OU="OpenVPN"
-export EASYRSA_KEY_SIZE=2048
-export EASYRSA_CA_EXPIRE=3650
-export EASYRSA_CERT_EXPIRE=3650
+# 配置 vars 文件（可选：如果需要默认值可以预先写入）
+cat > vars <<EOF
+export KEY_COUNTRY="CN"
+export KEY_PROVINCE="ZJ"
+export KEY_CITY="HZ"
+export KEY_ORG="yueshu"
+export KEY_EMAIL="it-admin@vesoft.com"
+export KEY_OU="IT"
+export KEY_NAME="server"
 EOF
 
 # 初始化 PKI
-echo "🔧 初始化 PKI..."
-"$EASYRSA_CMD" init-pki
+./easyrsa --pki-dir="$EASYRSA_PKI" init-pki
 
-# 生成 CA（交互式，使用 echo 模拟输入）
-echo "🔏 生成 CA 证书..."
-echo -e "\n" | "$EASYRSA_CMD" build-ca nopass
+# 构建 CA（交互式输入，或使用 --batch 和预设信息）
+./easyrsa --pki-dir="$EASYRSA_PKI" build-ca nopass
 
 # 生成服务器证书
-echo "🖥️ 生成服务器证书..."
-echo "server" | "$EASYRSA_CMD" build-server-full server nopass
+./easyrsa --pki-dir="$EASYRSA_PKI" build-server-full server nopass
 
-# 生成 DH 参数
-echo "🔢 生成 DH 参数..."
-"$EASYRSA_CMD" gen-dh
+# 生成 Diffie-Hellman 参数
+./easyrsa --pki-dir="$EASYRSA_PKI" gen-dh
 
-# 生成 TLS 密钥
-echo "🔑 生成 TLS 密钥..."
+# 生成 HMAC 签名密钥 (TLS auth key)
 openvpn --genkey secret "$CERT_DIR/ta.key"
 
-# 复制证书文件到正确位置
-echo "📋 复制证书文件..."
-
-# 新版本的路径结构
-if [ -f "pki/ca.crt" ] && [ -f "pki/issued/server.crt" ] && [ -f "pki/private/server.key" ] && [ -f "pki/dh.pem" ]; then
-    cp "pki/ca.crt" "$CERT_DIR/"
-    cp "pki/issued/server.crt" "$CERT_DIR/"
-    cp "pki/private/server.key" "$CERT_DIR/"
-    cp "pki/dh.pem" "$CERT_DIR/"
-    echo "✅ 证书文件复制成功"
-else
-    echo "❌ 证书文件未找到，检查路径:"
-    find pki -name "*.crt" -o -name "*.key" -o -name "*.pem" 2>/dev/null || echo "pki 目录内容:"
-    ls -la pki/ 2>/dev/null || echo "无 pki 目录"
-    exit 1
-fi
-
-# 验证文件
-echo "✅ 验证生成的证书..."
-REQUIRED_FILES=("ca.crt" "server.crt" "server.key" "dh.pem" "ta.key")
-for file in "${REQUIRED_FILES[@]}"; do
-    if [ ! -f "$CERT_DIR/$file" ]; then
-        echo "❌ 缺少证书文件: $CERT_DIR/$file"
-        ls -la "$CERT_DIR/" 2>/dev/null || echo "证书目录内容:"
-        exit 0
-    else
-        echo "✅ $file 存在"
-    fi
-done
+# 可选：生成客户端证书
+# ./easyrsa --pki-dir="$EASYRSA_PKI" build-client-full client1 nopass
 
 # 设置权限
-echo "🛡️ 设置文件权限..."
-chmod 600 "$CERT_DIR/server.key" "$CERT_DIR/ta.key" 2>/dev/null || true
-chmod 644 "$CERT_DIR/ca.crt" "$CERT_DIR/server.crt" "$CERT_DIR/dh.pem" 2>/dev/null || true
+chmod 600 "$EASYRSA_PKI/private/"*.key "$CERT_DIR/ta.key"
+chmod 644 "$EASYRSA_PKI/issued/"*.crt "$EASYRSA_PKI/ca.crt" "$EASYRSA_PKI/dh.pem"
 
-echo "🎉 证书生成完成！"
-ls -la "$CERT_DIR/"
+# 如果 ta.key 放在 /etc/openvpn/certs 下，请确保路径一致
+chmod 600 "$CERT_DIR/ta.key"
+
+# 拷贝证书到 OpenVPN 服务器目录
+cd "$EASYRSA_DIR"
+sudo cp "$EASYRSA_PKI/ca.crt" "$EASYRSA_PKI/issued/server.crt" "$EASYRSA_PKI/private/server.key" "$EASYRSA_PKI/dh.pem" /etc/openvpn/certs/
