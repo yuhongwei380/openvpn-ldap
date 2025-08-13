@@ -23,11 +23,16 @@ introduce：
 our test env based on IPV6 NAT66 ,so the vm ' ipv6 address is not public IPV6 address ,also the docker network IPV6 is not public IPV6 address
 `fd00:2024:dbf:0000:2290::/80` is your docker network for IPV6
 
-daemon.json
+/etc/docker/daemon.json
 ```
 "ipv6": true,
 "fixed-cidr-v6": "fd00:2024:dbf:0000:2290::/80"
 
+```
+then,
+```
+systemctl daemon-reload
+systemctl restart docker 
 ```
 
 ## 4. Get the Client Config
