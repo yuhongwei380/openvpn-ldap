@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y \
     traceroute \
     vim \
     && rm -rf /var/lib/apt/lists/*
+    
+
 
 # 创建目录结构
 RUN mkdir -p /etc/openvpn/certs \
