@@ -15,7 +15,6 @@ RUN apt-get update && \
 # 可选：验证时区
 RUN date
 
-
 # 安装依赖
 RUN apt-get update && apt-get install -y \
     openvpn \
@@ -36,6 +35,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /etc/openvpn/certs \
     /etc/openvpn/auth \
     /etc/openvpn/client-configs \
+    /etc/openvpn/easyrsa \
     /usr/local/bin
 
 # 添加配置文件和脚本
@@ -52,6 +52,10 @@ COPY scripts/generate-client-config.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/generate-certs.sh \
     && chmod +x /usr/local/bin/generate-client-config.sh
+
+# 初始化 EasyRSA 环境
+RUN cd /etc/openvpn/easyrsa && \
+    cp -r /usr/share/easy-rsa/* . 2>/dev/null || echo "No easy-rsa files to copy"
 
 # 开放VPN端口
 EXPOSE 1194/udp

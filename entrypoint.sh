@@ -93,8 +93,11 @@ fi
 # 权限修复（确保OpenVPN可以访问证书）
 # ==============================================
 chown -R nobody:nogroup "$CERT_DIR"
-chmod 600 "$CERT_DIR/"*.key "$CERT_DIR/ta.key" 2>/dev/null || true
-chmod 644 "$CERT_DIR/"*.crt "$CERT_DIR/dh.pem" 2>/dev/null || true
+# 使用更安全的方式设置权限
+find "$CERT_DIR" -name "*.key" -exec chmod 600 {} \; 2>/dev/null || true
+find "$CERT_DIR" -name "*.crt" -exec chmod 644 {} \; 2>/dev/null || true
+chmod 600 "$CERT_DIR/ta.key" 2>/dev/null || true
+chmod 644 "$CERT_DIR/dh.pem" 2>/dev/null || true
 
 # ==============================================
 # 创建客户端配置生成功能
