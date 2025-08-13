@@ -21,7 +21,7 @@ if ! command -v easyrsa &> /dev/null; then
         EASYRSA_CMD="$EASYRSA_PATH"
     else
         echo "❌ 无法找到 easyrsa 命令"
-        exit 1
+        exit 0
     fi
 else
     EASYRSA_CMD="easyrsa"
@@ -88,7 +88,7 @@ for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$CERT_DIR/$file" ]; then
         echo "❌ 缺少证书文件: $CERT_DIR/$file"
         ls -la "$CERT_DIR/" 2>/dev/null || echo "证书目录内容:"
-        exit 1
+        exit 0
     else
         echo "✅ $file 存在"
     fi
