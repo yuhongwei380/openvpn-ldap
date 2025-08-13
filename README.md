@@ -2,11 +2,13 @@
 
 Openvpn Connect to LDAP with this project : AzureAD-LDAP-wrapper
 
+Configure the AzureAD application according to the requirements of the following project
+
 https://github.com/ahaenggli/AzureAD-LDAP-wrapper
 
 AzureAD-LDAP-wrapper is a ldap which connect with AzureAD (Now is the Entra ID)
 
-#Using
+# Using
 
 ## 1. docker-compose  with the .env
 
