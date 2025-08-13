@@ -67,10 +67,38 @@ NAT from vm with docker
 sudo iptables -t nat -A POSTROUTING -s 10.7.0.0/16 -o eth0 -j MASQUERADE
 sudo ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/80 -o  eth0 -j MASQUERADE
 ```
-删除 iptables
+Set NAT rule on boot
+```
+sudo vim /etc/systemd/system/openvpn-iptables.service
+```
+```
+[Unit]
+Description=OpenVPN IPTables Rules
+After=network.target
+Before=openvpn-server@server.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'iptables -t nat -A POSTROUTING -s 10.7.0.0/16 -o eth0 -j MASQUERADE; ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/80 -o eth0 -j MASQUERADE'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+then
+```
+sudo systemctl daemon-reload
+sudo systemctl enable openvpn-iptables.service
+```
+
+Delete iptables
 ```
 sudo ip6tables -t nat -D POSTROUTING -s fd12:3456:789a::/64 -o eth0 -j MASQUERADE
 ```
-
+See the iptables
+```
+sudo iptables -t nat -L -n -v
+sudo ip6tables -t nat -L -n -v
+```
 
 
