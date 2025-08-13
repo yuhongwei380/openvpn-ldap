@@ -10,7 +10,26 @@ AzureAD-LDAP-wrapper is a ldap which connect with AzureAD (Now is the Entra ID)
 
 # Using
 
-## 1. docker-compose  with the .env
+## 1. Download file 
+
+```
+mkdir vpn
+mkdir -p  vpn/certs
+```
+!!!! You should Prepare certificate ！ 
+
+`ca.crt`  、  `dh.pem`  、`server.crt` 、 `server.key`
+
+Also，you can Using the config to create the cert In ENV file 
+```
+GENERATE_CERTS=false     #change false  to true 
+```
+
+`docker-compose.yml` and  `.env` file in the repo ,you shoud download it and change the infomation  to yourself
+then, do it !
+```
+docker-compose up -d 
+```
 
 ## 2. get the client profile
 ```
