@@ -20,7 +20,7 @@ mkdir -p  vpn/certs
 
 `ca.crt`  、  `dh.pem`  、`server.crt` 、 `server.key`
 
-Also，you can Using the config to create the cert In ENV file （No Test）
+Also，you can Using the config to create the cert In ENV file
 ```
 GENERATE_CERTS=false     #change false  to true 
 ```
