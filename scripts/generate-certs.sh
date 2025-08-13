@@ -21,8 +21,8 @@ cat > vars <<EOF
 export KEY_COUNTRY="CN"
 export KEY_PROVINCE="ZJ"
 export KEY_CITY="HZ"
-export KEY_ORG="yueshu"
-export KEY_EMAIL="it-admin@vesoft.com"
+export KEY_ORG="admin"
+export KEY_EMAIL="example@test.com"
 export KEY_OU="IT"
 export KEY_NAME="server"
 EOF
