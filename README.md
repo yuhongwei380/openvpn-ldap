@@ -8,6 +8,8 @@ https://github.com/ahaenggli/AzureAD-LDAP-wrapper
 
 AzureAD-LDAP-wrapper is a ldap which connect with AzureAD (Now is the Entra ID)
 
+This OpenVPN default Seting LDAP Search :`SearchFilter    (mail=%u)`
+
 # Using
 
 ## 1. Download file 
