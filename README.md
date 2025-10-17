@@ -69,6 +69,12 @@ NAT from vm with docker
 sudo iptables -t nat -A POSTROUTING -s 10.7.0.0/16 -o eth0 -j MASQUERADE
 sudo ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/80 -o  eth0 -j MASQUERADE
 ```
+永久保存：
+```
+sudo apt install iptables-persistent
+sudo iptables-save > /etc/iptables/rules.v4
+sudo systemctl enable --now iptables
+```
 删除 iptables
 ```
 sudo ip6tables -t nat -D POSTROUTING -s fd12:3456:789a::/64 -o eth0 -j MASQUERADE
