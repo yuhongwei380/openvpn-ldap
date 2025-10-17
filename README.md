@@ -81,4 +81,24 @@ sudo ip6tables -t nat -D POSTROUTING -s fd12:3456:789a::/64 -o eth0 -j MASQUERAD
 ```
 
 
+NAT SERVICE：
+sudo vim /etc/systemd/system/openvpn-iptables.service
+```
+[Unit]
+Description=OpenVPN IPTables Rules
+After=network.target
+Before=openvpn-server@server.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'iptables -t nat -A POSTROUTING -s 10.7.0.0/16 -o eth0 -j MASQUERADE; ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/80 -o eth0 -j MASQUERADE'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+sudo systemctl enable openvpn-iptables.service
+
+
+
 
