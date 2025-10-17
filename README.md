@@ -69,18 +69,22 @@ NAT from vm with docker
 sudo iptables -t nat -A POSTROUTING -s 10.7.0.0/16 -o eth0 -j MASQUERADE
 sudo ip6tables -t nat -A POSTROUTING -s fd00:2024:dbf:0000:2290::/80 -o  eth0 -j MASQUERADE
 ```
-永久保存：
-```
-sudo apt install iptables-persistent
-sudo iptables-save > /etc/iptables/rules.v4
-sudo systemctl enable --now iptables
-```
+
 删除 iptables
 ```
 sudo ip6tables -t nat -D POSTROUTING -s fd12:3456:789a::/64 -o eth0 -j MASQUERADE
 ```
 
+永久保存NAT规则：
 
+
+方法1：
+```
+sudo apt install iptables-persistent
+sudo iptables-save > /etc/iptables/rules.v4
+sudo systemctl enable --now iptables
+```
+方法2（推荐）：
 NAT SERVICE：
 sudo vim /etc/systemd/system/openvpn-iptables.service
 ```
@@ -97,6 +101,25 @@ RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target
 ```
+or
+```
+sudo tee /etc/systemd/system/openvpn-iptables.service <<'EOF'
+[Unit]
+Description=OpenVPN IPTables Rules
+After=network.target
+Before=openvpn-server@server.service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/iptables -t nat -A POSTROUTING -s 10.6.0.0/16 -o enp2s0 -j MASQUERADE
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+sudo systemctl daemon-reload
+sudo systemctl start openvpn-iptables.service
 sudo systemctl enable openvpn-iptables.service
 
 
