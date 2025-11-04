@@ -63,7 +63,17 @@ systemctl restart docker
 docker cp openvpn-ldap:/etc/openvpn/client-configs/default-client.ovpn ./
 ```
 
-## 5.Setting the NAT
+## 5. ssl证书权限
+```
+chown nobody:nogroup ca.crt dh.pem server.crt server.key
+chmod 644 ca.crt
+chmod 644 dh.pem
+chmod 644 server.crt
+chmod 600 server.key
+```
+
+
+## 6.Setting the NAT
 NAT from vm with docker
 ```
 sudo iptables -t nat -A POSTROUTING -s 10.7.0.0/16 -o eth0 -j MASQUERADE
