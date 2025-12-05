@@ -19,7 +19,7 @@ dh ${OVPN_DH_PEM}
 
 # 网络配置
 server ${OVPN_NETWORK} ${OVPN_NETMASK}
-push "${OPVN_ROUTE_NETWORK} ${OPVN_ROUTE_NETMASK} vpn_gateway"
+push "${OVPN_ROUTE_NETWORK} ${OVPN_ROUTE_NETMASK} vpn_gateway"
 #push "redirect-gateway def1 bypass-dhcp"
 #push "dhcp-option DNS ${OVPN_DNS_IPV4}"
 
