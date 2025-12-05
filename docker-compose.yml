@@ -28,7 +28,7 @@ services:
     image: ruimarinho/openvpn-monitor
     container_name: openvpn-monitor
     ports:
-      - "8080:80"
+      - "8888:80"
     environment:
       - OPENVPNMONITOR_DEFAULT_DATETIMEFORMAT=%%d/%%m/%%Y
       - OPENVPNMONITOR_DEFAULT_SITE=OpenVPN Server
