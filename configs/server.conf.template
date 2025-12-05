@@ -19,8 +19,10 @@ dh ${OVPN_DH_PEM}
 
 # 网络配置
 server ${OVPN_NETWORK} ${OVPN_NETMASK}
-push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS ${OVPN_DNS_IPV4}"
+push "192.168.16.0 255.255.255.0 vpn_gateway"
+#push "redirect-gateway def1 bypass-dhcp"
+#push "dhcp-option DNS ${OVPN_DNS_IPV4}"
+
 
 # IPv6 配置（仅在启用时生效）
 ${OVPN_IPV6_CONFIG}
